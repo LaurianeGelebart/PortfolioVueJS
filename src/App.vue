@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Navbar></Navbar>
-    <Header></Header>
+    <Navbar :user3D="user3D" @update:user3D="value => user3D = value" :isLaptop="isLaptop"></Navbar>
+    <Header :user3D="user3D" :isLaptop="isLaptop"></Header>
     <main>
       <WhoAmI :isLaptop="isLaptop"></WhoAmI>
-      <Gallery :isLaptop="isLaptop" v-model:scrollLocked="scrollLocked"></Gallery>
+      <Gallery :isLaptop="isLaptop" :scrollLocked="scrollLocked" @update:scrollLocked="value => scrollLocked = value"></Gallery>
     </main>
     <Footer></Footer>
     <div v-if="scrollLocked" class="black"></div>
@@ -31,6 +31,7 @@ export default {
     return {
       scrollLocked: false,
       isLaptop: false,
+      user3D: false,
     }
   },
   methods: {

@@ -53,7 +53,7 @@ export default {
   props: {
     panelOpen: { type: Boolean, required: true },
     name: { type: String, required: true },
-    img: { type: Object, required: true },
+    img: { type: Array, required: true },
     description: { type: String, required: true },
     date: { type: String, required: true },
     links: { type: Object, required: true },

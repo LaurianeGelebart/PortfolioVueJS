@@ -1,34 +1,38 @@
 <template>
-  <div @mouseover="hover=true" @mouseleave="hover=false" class="itemGallery">
+  <div
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
+    class="itemGallery"
+  >
     <img :src="'../img/' + img[0].src" :alt="img[0].alt" />
     <Transition duration="1000" name="nested">
-    <div v-show="hover" class="infos">
-      <h2>{{ name }}</h2>
-      <div class="tags">
-        <p v-for="tag in tags" :key="tag">{{ tag }}</p>
+      <div v-show="hover" class="infos">
+        <h2>{{ name }}</h2>
+        <div class="tags">
+          <p v-for="tag in tags" :key="tag">{{ tag }}</p>
+        </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CardPage',
+  name: "CardPage",
   components: {},
   props: {
     name: { type: String, required: true },
-    img: { type: Object, required: true },
-    tags: { type: Object, required: true }
+    img: { type: Array, required: true },
+    tags: { type: Array, required: true },
   },
   data() {
     return {
-      hover: false
-    }
+      hover: false,
+    };
   },
   methods: {},
-  beforeMount() { }
-}
+  beforeMount() {},
+};
 </script>
   
 <style scoped>
@@ -44,8 +48,8 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  overflow: hidden; 
-  cursor: pointer; 
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .itemGallery img {
@@ -57,7 +61,7 @@ export default {
   top: 0;
   object-fit: cover;
   object-position: center center;
-  transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+  transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
   opacity: 0.9;
 }
 /* 
@@ -74,15 +78,15 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 100%
+  height: 100%;
 }
 
 .itemGallery h2 {
-  font-family: 'PRIMETIME', sans-serif;
+  font-family: "PRIMETIME", sans-serif;
   font-size: 2.5rem;
   color: var(--accent-color-hover);
   margin: auto;
-  padding: 0 4rem ;
+  padding: 0 4rem;
 }
 
 .tags {
@@ -90,18 +94,17 @@ export default {
   color: black;
   display: flex;
   flex-direction: row;
-  padding: 0 1rem ; 
-  justify-content: center; 
+  padding: 0 1rem;
+  justify-content: center;
 }
 
 .tags p {
   padding: 0 0.5rem;
 }
 
-
 .nested-enter-active,
 .nested-leave-active {
-  transition: 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+  transition: 0.3s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
 .nested-enter-from,
@@ -109,7 +112,6 @@ export default {
   transform: translateX(-50rem);
   opacity: 0;
 }
-
 
 @media screen and (max-width: 1024px) {
   .itemGallery {

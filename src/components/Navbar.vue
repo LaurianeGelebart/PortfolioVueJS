@@ -1,94 +1,170 @@
 <template>
   <nav id="navbar" class="navbar">
     <div class="button" @click="toggleMenu">
-      <svg v-if="!menuOpen" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="feather feather-menu">
+      <svg
+        v-if="!menuOpen"
+        xmlns="http://www.w3.org/2000/svg"
+        width="50"
+        height="50"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-menu"
+      >
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
-      <svg v-if="menuOpen" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+      <svg
+        v-if="menuOpen"
+        xmlns="http://www.w3.org/2000/svg"
+        width="50"
+        height="50"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-x"
+      >
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </div>
     <Transition duration="550" name="nested">
-      <div class="menu" v-if="menuOpen" @click="closeMenu">
-        <ul>
-          <li class="nav-item">
-            <a @click="toggleMenu" class="nav-link navbar_element" id="navbar_moi" href="#WhoAmI">Qui suis-je ?</a>
-          </li>
-          <li class="nav-item">
-            <a @click="toggleMenu" class="nav-link navbar_element" id="navbar_real" href="#Gallery">Réalisations</a>
-          </li>
-          <li class="nav-item">
-            <a @click="toggleMenu" class="nav-link navbar_element" id="navbar_contact" href="#Contacts">Contact</a>
-          </li>
-        </ul>
-        <div class="switchTheme">
-          <input @change="toggleTheme" id="checkbox" type="checkbox" class="switch-checkbox" />
-          <label for="checkbox" class="switch-label">
-            <span>☀️</span>
-            <span>🌙</span>
-            <div class="switch-toggle" :class="{ 'switch-toggle-checked': userTheme === 'dark-theme' }"></div>
-          </label>
+      <div v-if="menuOpen">
+        <div class="menu" @click="closeMenu">
+          <ul>
+            <li class="nav-item">
+              <a
+                @click="toggleMenu"
+                class="nav-link navbar_element"
+                id="navbar_moi"
+                href="#WhoAmI"
+                >Qui suis-je ?</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                @click="toggleMenu"
+                class="nav-link navbar_element"
+                id="navbar_real"
+                href="#Gallery"
+                >Réalisations</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                @click="toggleMenu"
+                class="nav-link navbar_element"
+                id="navbar_contact"
+                href="#Contacts"
+                >Contact</a
+              >
+            </li>
+          </ul>
+          <div class="switches">
+            <div class="switchTheme">
+              <input
+                @change="toggleTheme"
+                id="checkbox"
+                type="checkbox"
+                class="switch-checkbox"
+              />
+              <label for="checkbox" class="switch-label">
+                <span>🌙</span>
+                <span>☀️</span>
+                <div
+                  class="switch-toggle"
+                  :class="{
+                    'switch-toggle-checked': userTheme === 'dark-theme',
+                  }"
+                ></div>
+              </label>
+            </div>
+            <div v-if=isLaptop class="switch3D">
+              <input
+                @change="toggle3D"
+                id="checkbox3D"
+                type="checkbox"
+                class="switch-checkbox"
+              />
+              <label for="checkbox3D" class="switch-label">
+                <span>🧊</span>
+                <span>✏️</span>
+                <div
+                  class="switch-toggle"
+                  :class="{ 'switch-toggle-checked': user3D === true }"
+                ></div>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </Transition>
-
-
   </nav>
 </template>
 
 <script>
 export default {
-  name: 'NavbarPage',
+  name: "NavbarPage",
   props: {
     // menuOpen: {type: Boolean, required: true}
-  },  
+    isLaptop: { type: Boolean, required: true, default: false },
+    user3D: { type: Boolean, required: true, default: false },
+  },
   // emits: ["update:menuOpen"],
+  emits: ["update:user3D"],
   data() {
     return {
       menuOpen: false,
-      userTheme: "light-theme"
-    }
+      userTheme: "light-theme",
+    };
   },
   methods: {
-    getMediaPreference() {
-      const hasDarkPreference = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return (hasDarkPreference) ? "dark-theme" : "light-theme"
-    },
-    getTheme() {
-      return localStorage.getItem("user-theme")
-    },
+    // getMediaPreference() {
+    //   const hasDarkPreference = window.matchMedia(
+    //     "(prefers-color-scheme: dark)"
+    //   ).matches;
+    //   return hasDarkPreference ? "dark-theme" : "light-theme";
+    // },
+    // getTheme() {
+    //   return localStorage.getItem("user-theme");
+    // },
     setTheme(theme) {
       localStorage.setItem("user-theme", theme);
       this.userTheme = theme;
       document.documentElement.className = theme;
     },
     toggleTheme() {
-      const activeTheme = localStorage.getItem("user-theme")
+      const activeTheme = localStorage.getItem("user-theme");
       if (activeTheme === "light-theme") {
-        this.setTheme("dark-theme")
+        this.setTheme("dark-theme");
       } else {
-        this.setTheme("light-theme")
+        this.setTheme("light-theme");
       }
-    }, toggleMenu(event){
-      event.stopPropagation()
-      this.menuOpen = !this.menuOpen
+    },
+    toggle3D() {
+      this.$emit("update:user3D", !this.user3D);
+    },
+    toggleMenu() {
+      // event.stopPropagation();
+      this.menuOpen = !this.menuOpen;
     },
     closeMenu(event) {
       if (this.menuOpen && !this.$el.contains(event.target)) {
-        this.menuOpen = false
+        this.menuOpen = false;
       }
-    }
-  }, 
-  mounted(){
-    document.addEventListener('click', this.closeMenu);
-  }
-}
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.closeMenu);
+  },
+};
 </script>
 
 <style scoped>
@@ -100,7 +176,7 @@ export default {
 }
 
 .feather {
-  transition: 0.15s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+  transition: 0.15s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
 .feather-menu {
@@ -119,7 +195,8 @@ export default {
   stroke: var(--text-primary-color);
 }
 
-.navbar * {}
+.navbar * {
+}
 
 .button {
   cursor: pointer;
@@ -144,10 +221,9 @@ export default {
   justify-content: space-between;
 }
 
-
 .nested-enter-active,
 .nested-leave-active {
-  transition: 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+  transition: 0.3s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
 .nested-enter-from,
@@ -160,8 +236,8 @@ a {
   color: var(--text-secondary-color);
   /* color: var(--text-primary-color); */
   font-size: 3.5rem;
-  font-family: 'PRIMETIME', sans-serif;
-  transition: 0.15s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+  font-family: "PRIMETIME", sans-serif;
+  transition: 0.15s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
 a:hover {
@@ -169,7 +245,14 @@ a:hover {
   /* color: var(--accent-color-hover); */
 }
 
-.switchTheme {}
+.switches {
+  display: flex;
+  flex-direction: row;
+}
+
+.switches > * {
+  padding-right: 2rem;
+}
 
 .switch-checkbox {
   display: none;
@@ -183,8 +266,8 @@ a:hover {
   position: absolute;
   background-color: var(--background-color-secondary);
   border-radius: 50%;
-  top: calc(3rem* 0.07);
-  left: calc(3rem* 0.07);
+  top: calc(3rem * 0.07);
+  left: calc(3rem * 0.07);
   height: calc(3rem * 0.4);
   width: calc(3rem * 0.4);
   transform: translateX(0);
@@ -196,7 +279,7 @@ a:hover {
 
   border-radius: 3rem;
   border: calc(3rem * 0.025) solid var(--text-primary-color);
-  padding: calc(3rem* 0.1);
+  padding: calc(3rem * 0.1);
   font-size: calc(3rem * 0.3);
   height: calc(3rem * 0.35);
 
@@ -210,7 +293,8 @@ a:hover {
   z-index: 1;
 }
 
-@media screen and (max-width: 1024px) {}
+@media screen and (max-width: 1024px) {
+}
 
 @media screen and (max-width: 768px) {
   .menu {
@@ -222,9 +306,8 @@ a:hover {
     max-width: 100vw;
   }
 
-  a{
+  a {
     font-size: 2.5rem;
   }
-
 }
 </style>

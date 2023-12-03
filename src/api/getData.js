@@ -7,7 +7,18 @@ const getProjects = async function() {
     } else {
         new Error(response.statusText)
     }
+}
+
+const getModels = async function() {
+    const response = await fetch("./models.json")
+    if (response.status == 200) {
+        let data = await response.json()
+        // console.log(data.projects)
+        return data
+    } else {
+        new Error(response.statusText)
+    }
 } 
 
 
-export { getProjects }
+export { getProjects, getModels}

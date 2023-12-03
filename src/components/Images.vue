@@ -29,7 +29,7 @@
 export default {
   name: "ImagesPage",
   props: {
-    img: { type: Object, required: true },
+    img: { type: Array, required: true },
   },
   data() {
     return {
